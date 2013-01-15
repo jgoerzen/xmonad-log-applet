@@ -7,6 +7,13 @@
 *.un~
 .#*
 .*.swp
+*.la
+*.lo
+*.so
+ltmain.sh
+libtool
+compile
+.libs
 .deps
 Makefile
 Makefile.in

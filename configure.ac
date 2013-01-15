@@ -5,6 +5,8 @@ AM_INIT_AUTOMAKE([foreign])
 
 AM_MAINTAINER_MODE
 
+LT_INIT
+
 AC_PROG_CC
 AC_PROG_SED
 AC_PROG_INSTALL
@@ -46,9 +48,9 @@ AS_IF(
         [AC_DEFINE(PANEL_MATE, 1, [panel type])]
         ,
     [test "x$panel" = xxfce4],
-        [PKG_CHECK_MODULES(LIBPANEL, libxfce4panel-1.0 >= 4.6.0)]
-        LIBPANEL_APPLET_DIR=`$PKG_CONFIG --variable=prefix libxfce4panel-1.0`/share/xfce4/panel-plugins
-        PLUGIN_DIR=`$PKG_CONFIG --variable=libdir libxfce4panel-1.0`/xfce4/panel/plugins
+        [PKG_CHECK_MODULES(LIBPANEL, libxfce4panel-2.0 >= 4.6.0)]
+        LIBPANEL_APPLET_DIR=`$PKG_CONFIG --variable=prefix libxfce4panel-2.0`/share/xfce4/panel-plugins
+        PLUGIN_DIR=`$PKG_CONFIG --variable=libdir libxfce4panel-2.0`/xfce4/panel/plugins
         [AC_DEFINE(PANEL_XFCE4, 1, [panel type])]
         ,
     [AC_MSG_ERROR([Unknown panel type, use gnome2, gnome3, mate or xfce4])]

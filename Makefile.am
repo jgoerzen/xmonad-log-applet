@@ -1,36 +1,47 @@
 plugindir = $(PLUGIN_DIR)
-plugin_PROGRAMS = xmonad-log-applet
+plugin_LTLIBRARIES = libxmonad-log-applet.la
 
-xmonad_log_applet_SOURCES = main.c
+libxmonad_log_applet_la_SOURCES = main.c
 
-xmonad_log_applet_CPPFLAGS = \
+libxmonad_log_applet_la_CPPFLAGS = \
 	$(GLIB_CFLAGS) \
 	$(DBUS_GLIB_CFLAGS) \
 	$(LIBPANEL_CFLAGS)
 
-xmonad_log_applet_LDADD = \
+libxmonad_log_applet_la_LIBADD = \
 	$(GLIB_LIBS) \
 	$(DBUS_GLIB_LIBS) \
 	$(LIBPANEL_LIBS)
 
-appletdir = $(LIBPANEL_APPLET_DIR)
+libxmonad_log_applet_la_LDFLAGS = \
+	-avoid-version \
+	-module \
+	-no-undefined \
+	-export-symbols-regex '^xfce_panel_module_(preinit|init|construct)'
+
 if PANEL_GNOME
+appletdir = $(LIBPANEL_APPLET_DIR)
 applet_files = org.gnome.panel.XmonadLogApplet.panel-applet
 $(applet_files): $(applet_files:.panel-applet=.panel-applet.in)
 	$(SED) -e "s|\@PLUGIN_DIR\@|$(PLUGIN_DIR)|" $< > $@
+applet_DATA = $(applet_files)
 endif
 if PANEL_MATE
+appletdir = $(LIBPANEL_APPLET_DIR)
 applet_files = org.mate.panel.XmonadLogApplet.mate-panel-applet
 $(applet_files): $(applet_files:.mate-panel-applet=.mate-panel-applet.in)
 	$(SED) -e "s|\@PLUGIN_DIR\@|$(PLUGIN_DIR)|" $< > $@
-endif
-if PANEL_XFCE4
-applet_files = xmonad-log-applet.desktop
-$(applet_files): $(applet_files:.desktop=.desktop.in)
-	$(SED) -e "s|\@PLUGIN_DIR\@|$(PLUGIN_DIR)|" $< > $@
+applet_DATA = $(applet_files)
 endif
 
-applet_DATA = $(applet_files)
+if PANEL_XFCE4
+desktop_in_files = xmonad-log-applet.desktop.in
+desktopdir = $(datadir)/xfce4/panel/plugins
+desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
+desktop_files = xmonad-log-applet.desktop
+$(desktop_files): $(desktop_files:.desktop=.desktop.in)
+	$(SED) -e "s|\@PLUGIN_DIR\@|$(PLUGIN_DIR)|" $< > $@
+endif
 
 if PANEL_GNOME
 servicedir = $(SESSION_BUS_SERVICES_DIR)
@@ -48,8 +59,13 @@ org.mate.panel.applet.XmonadLogAppletFactory.service: $(service_in_files)
 endif
 
 DISTCLEANFILES = \
-	$(applet_DATA) \
 	$(service_DATA)
+
+if PANEL_XFCE4
+DISTCLEANFILES += $(desktop_DATA)
+else
+DISTCLEANFILES += $(applet_DATA)
+endif
 
 EXTRA_DIST = \
 	AUTHORS.md \
