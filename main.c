@@ -87,7 +87,8 @@ static void xmonad_log_applet_fill(GtkContainer *container)
     gtk_label_set_ellipsize(GTK_LABEL(label), PANGO_ELLIPSIZE_END);
 
     gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-    gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
+    gtk_label_set_xalign(GTK_LABEL(label), 0.0);
+    gtk_label_set_yalign(GTK_LABEL(label), 0.5);
     set_up_dbus_transfer(label);
 
 #ifndef PANEL_XFCE4
