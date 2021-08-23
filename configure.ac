@@ -42,9 +42,9 @@ AS_IF(
         [AC_DEFINE(PANEL_GNOME3, 1, [panel type])]
         ,
     [test "x$panel" = xmate],
-        [PKG_CHECK_MODULES(LIBPANEL, libmatepanelapplet-3.0 >= 1.4.0)]
-        LIBPANEL_APPLET_DIR=`$PKG_CONFIG --variable=prefix libmatepanelapplet-3.0`/share/mate-panel/applets
-        PLUGIN_DIR=`$PKG_CONFIG --variable=prefix libmatepanelapplet-3.0`/libexec
+        [PKG_CHECK_MODULES(LIBPANEL, libmatepanelapplet-4.0 >= 1.4.0)]
+        LIBPANEL_APPLET_DIR=`$PKG_CONFIG --variable=prefix libmatepanelapplet-4.0`/share/mate-panel/applets
+        PLUGIN_DIR=`$PKG_CONFIG --variable=prefix libmatepanelapplet-4.0`/libexec
         [AC_DEFINE(PANEL_MATE, 1, [panel type])]
         ,
     [test "x$panel" = xxfce4],
